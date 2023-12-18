@@ -68,3 +68,8 @@ class Item:
     @staticmethod
     def string_to_number(namber):
         return int(float(namber))
+
+    def __add__(self, other):
+        if issubclass(other.__class__, self.__class__):
+            return self.quantity + other.quantity
+        return None
