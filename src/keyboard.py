@@ -4,7 +4,6 @@ from src.item import Item
 class MixinLang:
 
 
-
 class Keyboard(Item):
 
     def __init__(self, name, price, quantity):
