@@ -56,14 +56,19 @@ class Item:
         self.__name = new_name
 
     @classmethod
-    def instantiate_from_csv(cls, file_path):
+    def instantiate_from_csv(cls, file_path='../src/items.csv'):
         file_path = os.path.join(os.path.dirname(__file__), "..", file_path)
-        cls.all.clear()
-        with open(file_path, 'r', encoding="windows-1251") as file:
-            reader = csv.DictReader(file)
-            items = list(reader)
-        for item in items:
-            Item(name=item["name"], price=float(item["price"]), quantity=int(item["quantity"]))
+        try:
+            cls.all.clear()
+            with open(file_path, 'r', encoding="windows-1251") as file:
+                reader = csv.DictReader(file)
+                items = list(reader)
+                for item in items:
+                    Item(name=item["name"], price=float(item["price"]), quantity=int(item["quantity"]))
+        except KeyError:
+            raise InstantiateCSVError("Файл item.csv поврежден")
+        except FileNotFoundError:
+            return f"Отсутствует файл item.csv"
 
     @staticmethod
     def string_to_number(namber):
@@ -73,3 +78,11 @@ class Item:
         if issubclass(other.__class__, self.__class__):
             return self.quantity + other.quantity
         return None
+
+
+class InstantiateCSVError(Exception):
+    def __init__(self):
+        pass
+
+    def __str__(self):
+        return 'Файл item.csv поврежден'
