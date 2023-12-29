@@ -1,4 +1,8 @@
 """Здесь надо написать тесты с использованием pytest для модуля item."""
+import csv
+
+import pytest
+
 from src.item import Item
 from src.phone import Phone
 
@@ -40,3 +44,16 @@ def test_add():
     assert item1 + phone1 == 25
     assert phone1 + phone1 == 10
     assert item1 + item1 == 40
+
+def test_instantiate_from_csv():
+    with open('items.csv') as file:
+        read = csv.DictReader(file)
+        assert read is not None
+        for x in read:
+            assert "name" in x
+            assert "price" in x
+            assert "quantity" in x
+
+def test_instantiate_from_csv_file_not():
+    with pytest.raises(FileNotFoundError):
+        Item.instantiate_from_csv('juguig.csv')
